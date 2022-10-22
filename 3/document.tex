@@ -1,0 +1,603 @@
+\documentclass[12pt]{article}
+%\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{relsize}
+\usepackage{ upgreek }
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[left=2cm,right=2cm,
+top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\pagestyle{empty}
+\setlength{\parskip}{10pt}
+%\setmainfont{Times New Roman}
+
+
+
+\begin{document}
+	
+\begin{center}
+	МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ \\ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ \\ 
+	ВЫСШЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ
+	\vskip 1.5cm
+	«Московский государственный технический \\
+	университет имени Н.Э. Баумана» \\
+	(МГТУ им. Н.Э. Баумана)
+	\vskip 1.5cm
+	ФАКУЛЬТЕТ ФУНДАМЕНТАЛЬНЫЕ НАУКИ \\
+	КАФЕДРА \\
+	«ВЫЧИСЛИТЕЛЬНАЯ МАТЕМАТИКА И МАТЕМАТИЧЕСКАЯ ФИЗИКА»
+	\vskip 0.4cm
+	Направление: \textbf{Математика и компьютерные науки}
+	\vskip 0.4cm
+	Дисциплина: Численные методы
+	\vskip 0.4cm
+	Домашняя работа №1-3 \\
+	1. Методы простой итерации и Зейделя \\
+	2. Методы касательных и секущих, метод деления отрезка пополам \\
+	Группа ФН11-51Б
+	\vskip 0.2cm
+	Вариант 1
+	
+	
+	\vskip 1.5cm
+	\begin{flushright}
+		Студент: Авилов О.Д.
+		
+		\vskip 1.5cm
+		
+		Преподаватель: Кутыркин В.А
+	\end{flushright}
+	Оценка:
+	
+	\begin{figure}[b]
+		\begin{center}
+			Москва 2022
+		\end{center}
+	\end{figure}
+	
+\end{center}
+
+% Конец титульника
+\newpage
+
+\begin{center}
+	\textbf{\textit{Задание 1.1}}
+\end{center}
+Используя метод простой итерации с нулевым начальным вектором, найти приближённое
+решение СЛАУ:
+$	\mathbf{A \cdot {}^{\mathsmaller{>}} x = {}^\mathsmaller{>}b}$
+, с матрицей, имеющей диагональное преобладание.
+Абсолютная погрешность приближённого решения не должна превышать величины 0,01.
+Предполагается, что все компоненты решения заданной СЛАУ равны единице. Матрица
+A
+этой СЛАУ приведена ниже в зависимости от варианта задания.
+Кроме того, используя неравенство (3), найти в методе простой итерации число шагов,
+необходимое для того чтобы гарантировать абсолютную погрешность приближённого
+решения не более 0,01. Сравнить это расчётное количество шагов с реальным количеством
+шагов, обеспечившим заданную погрешность.
+
+$N = 1, \beta = 1-0,02(49-51) = 1,04$
+
+\begin{equation*}
+	A = \left(
+	\begin{array}{cccc}
+		10\beta & 1 & 2 & 3\\
+		1 & 10\beta & 3 & 2\\
+		2 & 3 & 10\beta & 1\\
+		3 & 2 & 1 & 10\beta\\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		10,4 & 1 & 2 & 3\\
+		1 & 10,4 & 3 & 2\\
+		2 & 3 & 10,4 & 1\\
+		3 & 2 & 1 & 10,4\\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{center}
+	\textbf{\textit{Решение}}
+\end{center}
+\begin{equation*}
+\text{Найдем вектор } b = A \cdot x = \left(
+\begin{array}{cccc}
+	10,4 & 1 & 2 & 3\\
+	1 & 10,4 & 3 & 2\\
+	2 & 3 & 10,4 & 1\\
+	3 & 2 & 1 & 10,4\\
+\end{array}
+\right) \cdot
+\left(
+\begin{array}{c}
+	1\\ 1\\ 1\\	1\\
+\end{array}\right) = 
+\left(
+\begin{array}{c}
+	16,4\\ 16,4\\ 16,4\\ 16,4\\
+\end{array}\right)
+\end{equation*}\\
+Приведем СЛАУ к виду ${}^{\mathsmaller{>}} x = 
+F \cdot {}^{\mathsmaller{>}} x + {}^{\mathsmaller{>}} g$, где
+$F = E - D \cdot A, ||F|| < 1 $ и $ {}^{\mathsmaller{>}} g = D \cdot {}^{\mathsmaller{>}} b$\\
+Т.к. матрица A имеет диагональное преобладание, то можно D выбрать в виде:
+\begin{equation*}
+	D = \left(
+	\begin{array}{cccc}
+		\dfrac 1 {10,4} & 0 & 0 & 0\\
+		0 & \dfrac 1 {10,4} & 0 & 0\\
+		0 & 0 & \dfrac 1 {10,4} & 0\\
+		0 & 0 & 0 & \dfrac 1 {10,4}\\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		0,09615 & 0 & 0 & 0\\
+		0 & 0,09615 & 0 & 0\\
+		0 & 0 & 0,09615 & 0\\
+		0 & 0 & 0 & 0,09615\\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	\text{Тогда } F = E - D \cdot A = \left(
+	\begin{array}{cccc}
+		0 & -0,0962 & -0,1923 & -0,2885 \\
+		-0,0962 & 0 & -0,2885 & -0,1923 \\
+		-0,1923 & -0,2885 & 0 & -0,0962 \\
+		-0,2885 & -0,1923 & -0,0962 & 0 \\
+	\end{array}
+	\right), \hspace{0.2cm} {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		1,57692 \\ 1,57692 \\ 1,57692 \\ 1,57692 \\ 
+	\end{array}\right)
+\end{equation*}
+\begin{equation*}
+	\text{Положим начальный вектор итераций } {}^{\mathsmaller{>}} x_0 = 
+	 \left(
+	 \begin{array}{c}
+	 	0 \\ 0 \\ 0\\ 0\\
+	 \end{array}
+	 \right)
+\end{equation*}
+Рассчитаем количество шагов, гарантирующее абсолютную погрешность приближённого решения не более 0,01, используя неравенство:
+\begin{equation*}
+||{}^{\mathsmaller{>}} x _{(k)} - {}^{\mathsmaller{>}} x_*|| \leqslant
+\dfrac{||F||^k}{1- ||F||} \cdot || {}^{\mathsmaller{>}} g || + 
+||F||^k \cdot ||{}^{\mathsmaller{>}} x_{(0)}||
+\end{equation*}
+Решая данное неравенство получаем количество итераций $ k \geqslant 11 $ \\
+Тогда равносильная СЛАУ:
+\begin{equation*}
+	{}^{\mathsmaller{>}} x = F \cdot {}^{\mathsmaller{>}} x + {}^{\mathsmaller{>}} g = \left(
+	\begin{array}{cccc}
+		0 & -0,0962 & -0,1923 & -0,2885 \\
+		-0,0962 & 0 & -0,2885 & -0,1923 \\
+		-0,1923 & -0,2885 & 0 & -0,0962 \\
+		-0,2885 & -0,1923 & -0,0962 & 0 \\
+	\end{array}
+	\right) \cdot {}^{\mathsmaller{>}} x + \left(
+	\begin{array}{c}
+		1,57692 \\ 1,57692 \\ 1,57692 \\ 1,57692 \\ 
+	\end{array}\right)
+\end{equation*}
+Рабочая формула метода простой итерации: $  {}^{\mathsmaller{>}} x_{(k+1)}= F \cdot 
+ {}^{\mathsmaller{>}} x_{(k)} +  {}^{\mathsmaller{>}} g $
+Итерируем по шагам:
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{1}= F \cdot 
+	{}^{\mathsmaller{>}} x_{0} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		1,57692 \\ 1,57692 \\ 1,57692 \\ 1,57692 \\
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_1 = 0,57692 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{2}= F \cdot 
+	{}^{\mathsmaller{>}} x_{1} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		0,66716 \\ 0,66716 \\ 0,66716 \\ 0,66716 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_2 = 0,33284 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{3}= F \cdot 
+	{}^{\mathsmaller{>}} x_{2} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		1,19202 \\ 1,19202 \\ 1,19202 \\ 1,19202 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_3 = 0,19202 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{4}= F \cdot 
+	{}^{\mathsmaller{>}} x_{3} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		0,88922 \\ 0,88922 \\ 0,88922 \\ 0,88922 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_4 = 0,11078 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{5}= F \cdot 
+	{}^{\mathsmaller{>}} x_{4} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		1,06391 \\ 1,06391 \\ 1,06391 \\ 1,06391 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_5 = 0,06391 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{6}= F \cdot 
+	{}^{\mathsmaller{>}} x_{5} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		0,96313 \\ 0,96313 \\ 0,96313 \\ 0,96313 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_6 = 0,03687 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{7}= F \cdot 
+	{}^{\mathsmaller{>}} x_{6} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		1,02127 \\ 1,02127 \\ 1,02127 \\ 1,02127 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_7 = 0,02127 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{8}= F \cdot 
+	{}^{\mathsmaller{>}} x_{7} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		0,98773 \\ 0,98773 \\ 0,98773 \\ 0,98773 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_8 = 0,01227 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} x_{9}= F \cdot 
+	{}^{\mathsmaller{>}} x_{8} +  {}^{\mathsmaller{>}} g = 
+	\left(
+	\begin{array}{c}
+		1,00708 \\ 1,00708 \\ 1,00708 \\ 1,00708 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_9 = 0,00708 < 0,01
+\end{equation*}
+Получили приближённое решение СЛАУ $
+	{}^{\mathsmaller{>}} x_{9}= 
+	\left(
+	\begin{array}{c}
+		1,00708 \\ 1,00708 \\ 1,00708 \\ 1,00708 \\ 
+	\end{array}
+	\right)$
+c погрешностью не более 0,01 за 9 итераций (k = 9)
+\begin{center}
+	\textbf{\textit{Результаты}}
+\end{center}
+Методом простых итераций было получено решение СЛАУ на 9 итерации с точностью 0,01.
+По формуле оценки точность решения не более 0,01 достигается на 11 итерации.
+ 
+\begin{center}
+	\textbf{\textit{Задание 1.2}}
+\end{center}
+
+Используя метод Зейделя с нулевым начальным вектором, найти приближённое решение
+СЛАУ: $	\mathbf{A \cdot {}^{\mathsmaller{>}} x = {}^\mathsmaller{>}b}$
+, с матрицей, имеющей диагональное преобладание. Абсолютная
+погрешность приближённого решения не должна превышать величины 0,01.
+Предполагается, что все компоненты решения заданной СЛАУ равны единице. Матрица
+A
+этой СЛАУ приведена в Таблицах 1а,б. Сравнить в методах простой итерации и
+Зейделя количество шагов для достижения абсолютной погрешности, не превышающей
+величины 0,01.
+
+$N = 1, \beta = 1-0,02(49-51) = 1,04$
+
+\begin{equation*}
+	A = \left(
+	\begin{array}{cccc}
+		10\beta & 1 & 2 & 3\\
+		1 & 10\beta & 3 & 2\\
+		2 & 3 & 10\beta & 1\\
+		3 & 2 & 1 & 10\beta\\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		10,4 & 1 & 2 & 3\\
+		1 & 10,4 & 3 & 2\\
+		2 & 3 & 10,4 & 1\\
+		3 & 2 & 1 & 10,4\\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{center}
+	\textbf{\textit{Решение}}
+\end{center}
+Аналогично заданию 1.1 найдем равносильную СЛАУ (такая же как в задании 1.1):
+\begin{equation*}
+	{}^{\mathsmaller{>}} x = F \cdot {}^{\mathsmaller{>}} x + {}^{\mathsmaller{>}} g = \left(
+	\begin{array}{cccc}
+		0 & -0,0962 & -0,1923 & -0,2885 \\
+		-0,0962 & 0 & -0,2885 & -0,1923 \\
+		-0,1923 & -0,2885 & 0 & -0,0962 \\
+		-0,2885 & -0,1923 & -0,0962 & 0 \\
+	\end{array}
+	\right) \cdot {}^{\mathsmaller{>}} x + \left(
+	\begin{array}{c}
+		1,57692 \\ 1,57692 \\ 1,57692 \\ 1,57692 \\ 
+	\end{array}\right)
+\end{equation*}
+Рабочая формула метода Зейделя: $ {}^{\mathsmaller{>}} y_{(k)} = P\cdot 
+{}^{\mathsmaller{>}} y_{(k-1)} + Q \cdot {}^{\mathsmaller{>}} y_{(k)} +
+{}^{\mathsmaller{>}} g, k \in \mathbb{N} $,
+где
+\begin{equation*}
+	 B = \left(
+\begin{array}{cccc}
+	f^1_1 & 0 & \dots & 0 \\
+	f^2_1 & f^2_2 & \ddots & \vdots \\
+	\vdots & \ddots & \ddots & 0 \\
+	f^n_1 & f^n_2 & \dots & f^n_n \\
+\end{array}
+\right), \hspace{0.2cm}
+D = \left(
+\begin{array}{cccc}
+	f^1_1 & 0 & \dots & 0 \\
+	0 & f^2_2 & \ddots & \vdots \\
+	\vdots & \ddots & \ddots & 0 \\
+	0 & \dots & 0 & f^n_n \\
+\end{array}
+\right), \hspace{0.2cm}
+Q = B - D, P = F-Q, F = (f^i_j)^n_n
+\end{equation*}
+Найдем P и Q:
+\begin{equation*}
+	Q = \left(
+	\begin{array}{cccc}
+		0 & 0 & 0 & 0 \\
+		-0,0962 & 0 & 0 & 0 \\
+		-0,1923 & -0,2885 & 0 & 0 \\
+		-0,2885 & -0,1923 & -0,0962 & 0 \\
+	\end{array}
+	\right), \hspace{0.2cm}
+	P = \left(
+	\begin{array}{cccc}
+		0 & -0,0962 & -0,1923 & -0,2885 \\
+		0 & 0 & -0,2885 & -0,1923 \\
+		0 & 0 & 0 & -0,0962 \\
+		0 & 0 & 0 & 0 \\
+	\end{array}
+	\right)
+\end{equation*}
+$ {}^{\mathsmaller{>}} y_{(k)} = (E-Q)^{-1} \cdot P\cdot 
+{}^{\mathsmaller{>}} y_{(k-1)} + (E-Q)^{-1} \cdot
+{}^{\mathsmaller{>}} g, k \in \mathbb{N} $, 
+итерируем по шагам:
+\begin{equation*}
+	{}^{\mathsmaller{>}} y_{1}= 
+	\left(
+	\begin{array}{c}
+		1,57692 \\ 1,4253 \\ 0,86253 \\ 0,76501 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_1 = 0,57692 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} y_{2}= 
+	\left(
+	\begin{array}{c}
+		1,05333 \\ 1,07972 \\ 0,98934 \\ 0,97031 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_2 = 0,07972 > 0,01
+\end{equation*}
+\begin{equation*}
+	{}^{\mathsmaller{>}} y_{3}= 
+	\left(
+	\begin{array}{c}
+		1,00295 \\ 1,0085 \\ 0,99984 \\ 0,99753 \\ 
+	\end{array}
+	\right), \hspace{0.2cm}
+	\varepsilon_3 = 0,0085 < 0,01
+\end{equation*}
+Таким образом, необходимая точность достигается уже на 3 итерации.
+\begin{center}
+	\textbf{\textit{Результаты}}
+\end{center}
+Методом Зейделя было получено решение данной СЛАУ на 3 итерации с точностью 0,01. Следовательно, приближенное решение сходится к истинному быстрее, чем методом простых итераций.
+
+\begin{center}
+	\textbf{\textit{Задание 2}}
+\end{center}
+
+C погрешностью, не превосходящей величину $\varepsilon = 0,0001$
+, найти все корни уравнения: 
+
+$[N+5,2+(-1)^N\alpha] \cdot x^3 - [2N^2 + 10,4N + (-1)^{N+1}\alpha] \cdot x^2 -
+N^2(N+5,2)(x-2N) +(-1)^N \alpha = 0$
+
+Нарисовать график функции, стоящей в левой части уравнения. Используя этот
+график отделить корни уравнения. Для определения левого корня использовать метод
+касательных, правого – метод секущих. Для определения срединного корня использовать
+метод деления отрезка пополам.
+
+$N = 1, \alpha = 0,003 \cdot (51-50) = 0,003$
+
+Наше уравнение:
+\begin{equation*}
+	6,197 \cdot x^3 - 12,403 \cdot x^2 -
+	6,2 \cdot x + 12,397 = 0
+\end{equation*}
+\begin{center}
+	\textbf{\textit{Решение}}
+\end{center}
+Построим график и найдем корни уравнения:
+\begin{figure}[h]%current location
+	\centering
+	\scalebox{0.9}{\includegraphics{graph.png}}
+\end{figure}
+\begin{equation*}
+	\begin{split}
+		x_1 & = -0,9999193429 \\
+		x_2 & = 0,9992753320 \\
+		x_3 & = 2,002096327
+	\end{split}
+\end{equation*}
+\begin{enumerate}[label=\textbf{\arabic*})] 
+	\item \textbf{Определим левый корень методом касательных} \\
+	Рабочая формула для метода касательных имеет вид:
+	\begin{equation*}
+		x_k = x_{k-1} - (f^\prime(x_{k-1}))^{-1} \cdot f(x_{k-1})
+	\end{equation*}
+	Возьмем отрезок $[-1,5; -0.5]$, на этом отрезке $f^\prime > 0$ и $f^{\prime \prime} < 0$, $f(-1,5) < 0, f(-0.5) > 0$, соответственно на этом отрезке есть 1 корень уравнения, функция монотонно возрастает, сохраняя при этом направление выпуклости. Возьмем в качестве начального приближения $x_0 = -1,5$ \\
+	Получаем приближенные решения:
+\begin{equation*}
+	x_1 = -1,1276071154, \hspace{0.2cm}
+	\varepsilon_1 = 0,1276877725 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_2 = -1,0116152683, \hspace{0.2cm}
+	\varepsilon_2 = 0,0116959254 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_3 = -1,0000316716, \hspace{0.2cm}
+	\varepsilon_3 = 0,0001123287 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_4 = -0,9999193534, \hspace{0.2cm}
+	\varepsilon_4 = 1,05e-08 < 0,0001
+\end{equation*}
+Получили необходимую точность на 4 итерации.
+	\item \textbf{Определим правый корень методом секущих} \\
+Рассмотрим отрезок $[1,5; 2,5]$. На этом отрезке выполняются соотношения: \\
+$f(1,5) \cdot f(2,5) < 0 $ и $f(2,5) \cdot f^{\prime \prime} > 0 $ 
+
+	Тогда рабочая формула для метода секущих имеет вид:
+\begin{equation*}
+	x_k = x_{k-1} - \dfrac{(b-k_{k-1})f(x_{k-1})}{f(b)-f(x_{k-1})}, (k \in N),
+\end{equation*}
+где $b = 2,5$. Возьмем в качестве начального приближения $x_0 = 1,5$ \\
+Получаем приближенные решения:
+\begin{equation*}
+	x_1 = 1,6937628257, \hspace{0.2cm}
+	\varepsilon_1 = 0,3083335013 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_2 = 1,8394531563, \hspace{0.2cm}
+	\varepsilon_2 = 0,1626431707 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_3 = 1,9247925463, \hspace{0.2cm}
+	\varepsilon_3 = 0,0773037807 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_4 = 1,9674072239, \hspace{0.2cm}
+	\varepsilon_4 = 0,0346891031 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_5 = 1,9869570229, \hspace{0.2cm}
+	\varepsilon_5 = 0,0151393041 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_6 = 1,9955716259, \hspace{0.2cm}
+	\varepsilon_6 = 0,0065247011 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_7 = 1,9992997515, \hspace{0.2cm}
+	\varepsilon_7 = 0,0027965755 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_8 = 2,0009005181, \hspace{0.2cm}
+	\varepsilon_8 = 0,0011958089 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_9 = 2,001585522, \hspace{0.2cm}
+	\varepsilon_9 = 0,000510805 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_{10} = 2,0018782249, \hspace{0.2cm}
+	\varepsilon_{10} = 0,0002181021 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_{11} = 2,0020032195, \hspace{0.2cm}
+	\varepsilon_{11} = 0,0000931075 < 0,0001
+\end{equation*}
+Получили необходимую точность на 11 итерации.
+	\item \textbf{Определим срединный корень методом деления отрезка пополам} \\
+Смотря на график, выберем отрезок $[0,5; 1,5]$, он нам подходит, т.к. $f(0,5) \cdot f(1,5) < 0 $. \\
+Получаем приближенные решения:
+\begin{equation*}
+	x_1 = 1,0, \hspace{0.2cm}
+	\varepsilon_1 = 0,000724668 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_2 = 0,75, \hspace{0.2cm}
+	\varepsilon_2 = 0,249275332 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_3 = 0,875, \hspace{0.2cm}
+	\varepsilon_3 = 0,124275332 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_4 = 0,9375, \hspace{0.2cm}
+	\varepsilon_4 = 0,061775332 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_5 = 0,96875, \hspace{0.2cm}
+	\varepsilon_5 = 0,030525332 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_6 = 0,984375, \hspace{0.2cm}
+	\varepsilon_6 = 0,014900332 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_7 = 0,9921875, \hspace{0.2cm}
+	\varepsilon_7 = 0,007087832 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_8 = 0,99609375, \hspace{0.2cm}
+	\varepsilon_8 = 0,003181582 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_9 = 0,998046875, \hspace{0.2cm}
+	\varepsilon_9 = 0,001228457 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_{10} = 0,9990234375, \hspace{0.2cm}
+	\varepsilon_{10} = 0,0002518945 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_{11} = 0,9995117188, \hspace{0.2cm}
+	\varepsilon_{11} = 0,0002363868 > 0,0001
+\end{equation*}
+\begin{equation*}
+	x_{12} = 0,9992675781, \hspace{0.2cm}
+	\varepsilon_{12} = 0,0000077539 < 0,0001
+\end{equation*}
+Получили необходимую точность на 12 итерации.
+\end{enumerate}
+\begin{center}
+	\textbf{\textit{Результаты}}
+\end{center}
+Наибольшей скоростью сходимости из трех рассмотренных в данном задании методов для выбранных начальных значений и отрезков обладает метод касательных. Следующий по скорости - метод секущих. Наименьшей скоростью сходимости в данной задаче обладает метод деления отрезка пополам. 
+\end{document}

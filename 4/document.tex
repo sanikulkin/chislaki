@@ -1,0 +1,322 @@
+\documentclass[12pt]{article}
+%\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{relsize}
+\usepackage{ upgreek }
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[left=2cm,right=2cm,
+top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\pagestyle{empty}
+\setlength{\parskip}{10pt}
+%\setmainfont{Times New Roman}
+
+
+
+\begin{document}
+	
+	\begin{center}
+		МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ \\ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ \\ 
+		ВЫСШЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ
+		\vskip 1.5cm
+		«Московский государственный технический \\
+		университет имени Н.Э. Баумана» \\
+		(МГТУ им. Н.Э. Баумана)
+		\vskip 1.5cm
+		ФАКУЛЬТЕТ ФУНДАМЕНТАЛЬНЫЕ НАУКИ \\
+		КАФЕДРА \\
+		«ВЫЧИСЛИТЕЛЬНАЯ МАТЕМАТИКА И МАТЕМАТИЧЕСКАЯ ФИЗИКА»
+		\vskip 0.4cm
+		Направление: \textbf{Математика и компьютерные науки}
+		\vskip 0.4cm
+		Дисциплина: Численные методы
+		\vskip 0.4cm
+		Домашняя работа №1-4 \\
+		«Итерационный метод Якоби для полного решения задачи вычисления собственных значений
+		и собственных векторов квадратной симметричной матрицы» \\
+		Группа ФН11-51Б
+		\vskip 0.2cm
+		Вариант 1
+		
+		
+		\vskip 1.5cm
+		\begin{flushright}
+			Студент: Авилов О.Д.
+			
+			\vskip 1.5cm
+			
+			Преподаватель: Кутыркин В.А
+		\end{flushright}
+		Оценка:
+		
+		\begin{figure}[b]
+			\begin{center}
+				Москва 2022
+			\end{center}
+		\end{figure}
+		
+	\end{center}
+	
+	% Конец титульника
+	\newpage
+\begin{center}
+	\textbf{\textit{Задание}}
+\end{center}
+Используя метод Якоби, найти приближённое полное решение спектральной задачи для матрицы
+$A$, приведённой в таблицах ниже. Останов выбрать на том шаге итерации, когда максимальная по
+модулю внедиагональная компонента преобразованной матрицы станет меньше $\varepsilon=0.01$. 
+Проверить найденные приближённые собственные векторы и отвечающие им собственные
+значения матрицы $A$, проверив соответствующие приближённые равенства $(A \cdot {}^\mathsmaller{>} \tilde{q}_i \approx \tilde \lambda_i \cdot {}^\mathsmaller{>} \tilde{q}_i$ для любого $i \in \overline{1,4})$ с указанием погрешности.
+
+$N = 1, \beta = 1-0,1(50-51) = 1,1$
+
+\begin{equation*}
+	A = A[0] = \left(
+	\begin{array}{cccc}
+		10\beta & 1 & 2 & 3\\
+		1 & 10\beta & 3 & 2\\
+		2 & 3 & 10\beta & 1\\
+		3 & 2 & 1 & 10\beta\\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		11 & 1 & 2 & 3\\
+		1 & 11 & 3 & 2\\
+		2 & 3 & 11 & 1\\
+		3 & 2 & 1 & 11\\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{center}
+	\textbf{\textit{Решение}}
+\end{center}
+\begin{enumerate}[label=\textbf{\arabic*}] 
+\item \textbf{Итерация} \\
+	$a_1^4=3$ - максимальный по модулю внедиагональный элемент матрицы $A[0]$. \\
+	Выберем угол поворота $\varphi = \dfrac\pi4$.
+	Матрица поворота:
+\begin{equation*}
+	Q_0 = \left(
+	\begin{array}{cccc}
+		cos \varphi & 0 & 0 & -sin \varphi \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		sin \varphi & 0 & 0 & cos \varphi \\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		0.70711 & 0 & 0 & -0.7071 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		0.70711 & 0 & 0 & 0.70711 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	{}^T Q_0 = \left(
+	\begin{array}{cccc}
+		0.70711 & 0 & 0 & 0.70711 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		-0.7071 & 0 & 0 & 0.70711 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	A[1] = {}^T Q_0 \cdot A[0] \cdot Q_0 = \left(
+	\begin{array}{cccc}
+		14 & 2.12132 & 2.12132 & 0 \\
+		2.12132 & 11 & 3 & 0.70711 \\
+		2.12132 & 3 & 11 & -0.7071 \\
+		0 & 0.70711 & -0.7071 & 8 \\
+	\end{array}
+	\right)
+\end{equation*}
+\item \textbf{Итерация} \\
+$a_2^3=3$ - максимальный по модулю внедиагональный элемент матрицы $A[1]$. \\
+Выберем угол поворота $\varphi = \dfrac\pi4$.
+Матрица поворота:
+\begin{equation*}
+	Q_1 = \left(
+	\begin{array}{cccc}
+		1 & 0 & 0 & 0 \\
+		0 & cos \varphi & -sin \varphi & 0 \\
+		0 & sin \varphi & cos \varphi & 0 \\
+		0 & 0 & 0 & 1 \\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		1 & 0 & 0 & 0 \\
+		0 & 0.70711 & -0.7071 & 0 \\
+		0 & 0.70711 & 0.70711 & 0 \\
+		0 & 0 & 0 & 1 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	{}^T Q_1 = \left(
+	\begin{array}{cccc}
+		1 & 0 & 0 & 0 \\
+		0 & 0.70711 & 0.70711 & 0 \\
+		0 & -0.7071 & 0.70711 & 0 \\
+		0 & 0 & 0 & 1 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	A[2] = {}^T Q_1 \cdot A[1] \cdot Q_1 = \left(
+	\begin{array}{cccc}
+		14 & 3 & 0 & 0 \\
+		3 & 14 & 0 & 0 \\
+		0 & 0 & 8 & -1 \\
+		0 & 0 & -1 & 8 \\
+	\end{array}
+	\right)
+\end{equation*}
+\item \textbf{Итерация} \\
+$a_1^2=3$ - максимальный по модулю внедиагональный элемент матрицы $A[2]$. \\
+Выберем угол поворота $\varphi = \dfrac\pi4$.
+Матрица поворота:
+\begin{equation*}
+	Q_2 = \left(
+	\begin{array}{cccc}
+		cos \varphi & -sin \varphi & 0 & 0 \\
+		sin \varphi & cos \varphi & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		0 & 0 & 0 & 1 \\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		0.70711 & -0.7071 & 0 & 0 \\
+		0.70711 & 0.70711 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		0 & 0 & 0 & 1 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	{}^T Q_2 = \left(
+	\begin{array}{cccc}
+		0.70711 & 0.70711 & 0 & 0 \\
+		-0.7071 & 0.70711 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		0 & 0 & 0 & 1 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	A[3] = {}^T Q_2 \cdot A[2] \cdot Q_2 = \left(
+	\begin{array}{cccc}
+		17 & 0 & 0 & 0 \\
+		0 & 11 & 0 & 0 \\
+		0 & 0 & 8 & -1 \\
+		0 & 0 & -1 & 8 \\
+	\end{array}
+	\right)
+\end{equation*}
+\item \textbf{Итерация} \\
+$a_3^4=3$ - максимальный по модулю внедиагональный элемент матрицы $A[3]$. \\
+Выберем угол поворота $\varphi = \dfrac\pi4$.
+Матрица поворота:
+\begin{equation*}
+	Q_3 = \left(
+	\begin{array}{cccc}
+		1 & 0 & 0 & 0 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & cos \varphi & -sin \varphi \\
+		0 & 0 & sin \varphi & cos \varphi \\
+	\end{array}
+	\right)
+	=
+	\left(
+	\begin{array}{cccc}
+		1 & 0 & 0 & 0 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 0.70711 & -0.7071 \\
+		0 & 0 & 0.70711 & 0.70711 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	{}^T Q_3 = \left(
+	\begin{array}{cccc}
+		1 & 0 & 0 & 0 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 0.70711 & 0.70711 \\
+		0 & 0 & -0.7071 & 0.70711 \\
+	\end{array}
+	\right)
+\end{equation*}
+\begin{equation*}
+	A[4] = {}^T Q_3 \cdot A[3] \cdot Q_3 = \left(
+	\begin{array}{cccc}
+		17 & 0 & 0 & 0 \\
+		0 & 11 & 0 & 0 \\
+		0 & 0 & 7 & 0 \\
+		0 & 0 & 0 & 9 \\
+	\end{array}
+	\right)
+\end{equation*}
+\end{enumerate}
+После 4 итерации максимальный по модулю среди всех внедиагональных элементов оказался меньше $\varepsilon = 0.01$ На диагонали матрицы $A[4]$ стоят все собственные значения матрицы $A$.
+\begin{equation*}
+	Q[3] = Q_0 \cdot Q_1 \cdot Q_2 \cdot Q_3= \left(
+	\begin{array}{cccc}
+		0.5 & -0.5 & -0.5 & -0.5 \\
+		0.5 & 0.5 & -0.5 & 0.5 \\
+		0.5 & 0.5 & 0.5 & -0.5 \\
+		0.5 & -0.5 & 0.5 & 0.5 \\
+	\end{array}
+	\right)
+\end{equation*}
+Собственные векторы матрицы $A$ - это столбцы матрицы $Q[3]$
+\begin{equation*}
+	A \cdot {}^\mathsmaller{>} {q}_1 = \left(
+	\begin{array}{c}
+		8.5 \\ 8.5 \\ 8.5 \\ 8.5 \\ 
+	\end{array}
+	\right) = 
+	\lambda_1 \cdot {}^\mathsmaller{>} {q}_1
+\end{equation*}
+\begin{equation*}
+	A \cdot {}^\mathsmaller{>} {q}_2 = \left(
+	\begin{array}{c}
+		-5.5 \\ 5.5 \\ 5.5 \\ -5.5 \\  
+	\end{array}
+	\right) = 
+	\lambda_2 \cdot {}^\mathsmaller{>} {q}_2
+\end{equation*}
+\begin{equation*}
+	A \cdot {}^\mathsmaller{>} {q}_3 = \left(
+	\begin{array}{c}
+		-3.5 \\ -3.5 \\ 3.5 \\ 3.5 \\ 
+	\end{array}
+	\right) = 
+	\lambda_3 \cdot {}^\mathsmaller{>} {q}_3
+\end{equation*}
+\begin{equation*}
+	A \cdot {}^\mathsmaller{>} {q}_4 = \left(
+	\begin{array}{c}
+		-4.5 \\ 4.5 \\ -4.5 \\ 4.5 \\
+	\end{array}
+	\right) = 
+	\lambda_4 \cdot {}^\mathsmaller{>} {q}_4
+\end{equation*}
+Погрешность моих вычислений вышла очень малой ($\varepsilon$ $\approx 0$).
+\begin{center}
+	\textbf{\textit{Результаты}}
+\end{center}
+Таким образом, используя метод Якоби, было найдено приближённое решение спектральной задачи матрицы $A$. Приближённые собственные значения данной матрицы стоят на главной диагонали матрицы $A[4]$. А её собственные значения являются столбцами матрицы $Q[3]$. При проверке соответствующих приближённых равенств погрешность вышла меньшей, чем смогла выдать написанная мной программа на python, то есть практически нулевой.
+\end{document}
