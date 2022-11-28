@@ -1,0 +1,217 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{relsize}
+\usepackage{ upgreek }
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[left=2cm,right=2cm,
+top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\pagestyle{empty}
+\setlength{\parskip}{10pt}
+\usepackage{graphicx}
+\graphicspath{ {./} }
+
+
+
+\begin{document}
+	
+	\begin{center}
+		МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ \\ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ \\ 
+		ВЫСШЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ
+		\vskip 1.5cm
+		«Московский государственный технический \\
+		университет имени Н.Э. Баумана» \\
+		(МГТУ им. Н.Э. Баумана)
+		\vskip 1.5cm
+		ФАКУЛЬТЕТ ФУНДАМЕНТАЛЬНЫЕ НАУКИ \\
+		КАФЕДРА \\
+		«ВЫЧИСЛИТЕЛЬНАЯ МАТЕМАТИКА И МАТЕМАТИЧЕСКАЯ ФИЗИКА»
+		\vskip 0.4cm
+		Направление: \textbf{Математика и компьютерные науки}
+		\vskip 0.4cm
+		Дисциплина: Численные методы
+		\vskip 0.4cm
+		Домашняя работа №2-2 \\
+		«Интерполяционные кубические сплайны» \\
+		Группа ФН11-51Б
+		\vskip 0.2cm
+		Вариант 1
+		
+		
+		\vskip 1.5cm
+		\begin{flushright}
+			Студент: Авилов О.Д.
+			
+			\vskip 1.5cm
+			
+			Преподаватель: Кутыркин В.А
+		\end{flushright}
+		Оценка:
+		
+		\begin{figure}[b]
+			\begin{center}
+				Москва 2022
+			\end{center}
+		\end{figure}
+		
+	\end{center}
+	
+	% Конец титульника
+	\newpage
+	\begin{center}
+		\textbf{\textit{Задание}}
+	\end{center}
+На отрезке $[0,2]$ задана равномерная сетка $A = \langle \tau_0, \tau_1, \dots, \tau_{k} \rangle $, где $k = 10$, с шагом $h = 0.2 = stp(A)$ и определена функция
+$f(\tau) = 2sin \left(\dfrac{ \pi \tau} 2 \right) \sqrt{2(58-n) + N \tau^2 \sqrt{23-N}}$, где $n$ - номер группы и $N$ - номер студента в журнале группы. Для $A$-сеточной функции ${}^{\mathsmaller{>}} y = \hat A(f) =  [y_0, y_1, \dots, y_{k} \rangle \in {}^{\mathsmaller{>}}{\mathbb R}^{|A|}(A)$, где $y_i = f(\tau_i)$ для $i = \overline{0,k}$, решить задачу $A$-интерполяции сеточной функции ${}^{\mathsmaller{>}} y$ с помощью сплайна $spl_3(A; {}^{\mathsmaller{>}} y)$ 3-ей степени дефекта 1. Затем сравнить в узлах равномерной сетки
+$B = \left\langle \theta_0, \theta_1, \ldots, \theta_{2k} \right\rangle (stp(B) = 0.1)$ отрезка $[0,2]$ значения функции $f(\tau)$ и сплайна $spl_3(A; {}^{\mathsmaller{>}} y)$ и, кроме того, значения их
+производных, т.е. значения функций $\dfrac{df}{d \tau}$ и $\dfrac{d spl_3(A; {}^{\mathsmaller{>}} y)}{d \tau}$. Результаты проиллюстрировать
+графически.
+ 	\begin{center}
+	\textbf{\textit{Решение}}
+\end{center}
+N = 1, n = 51
+$$ f(\tau) = 2sin \left(\dfrac{ \pi \tau} 2 \right) \sqrt{14 + \tau^2 \sqrt{22}}
+$$
+
+На отрезке  $[0,2]$ равномерная сетка $A = \langle \tau_0, \tau_1, \dots, \tau_{10} \rangle $ и соответствующая ей сеточная функция ${}^{\mathsmaller{>}} y = [f(\tau_0), f(\tau_1), \dots, f(\tau_{10}) \rangle \in \underline{\mathbb R}^{11}(A) $ имеют вид:
+
+$$ 
+A =
+\left(
+\begin{array}{c}
+	0.0 \\ 0.2 \\ 0.4 \\ 0.6 \\ 0.8 \\ 1.0 \\ 1.2 \\ 1.4 \\ 1.6 \\ 1.8 \\ 2.0
+\end{array}
+\right) ,
+\hspace{0.2cm}
+{}^{\mathsmaller{>}} y = 
+\left(
+\begin{array}{c}
+0.0 \\ 2.32791 \\ 4.51494 \\ 6.40883 \\ 7.84304 \\ 8.64648 \\ 8.66541 \\ 7.79234 \\ 5.99512 \\ 3.3395 \\ 0.0
+\end{array}
+\right)
+$$ 
+
+Определим коэффициенты $a_i = y_{i-1}, 	i \in \langle 1, \ldots, k \rangle$ и $g_i = \dfrac{a_{i+1} - a_i}{h_i} , 	i \in \langle 1, \ldots, k - 1 \rangle$, где $h_i = \tau_i - \tau_{i-1}, i \in \langle 1, \ldots, k \rangle$
+
+$$ 
+a =
+\left(
+\begin{array}{c}
+0.0 \\ 2.32791 \\ 4.51494 \\ 6.40883 \\ 7.84304 \\ 8.64648 \\ 8.66541 \\ 7.79234 \\ 5.99512 \\ 3.3395
+\end{array}
+\right) ,
+\hspace{0.2cm}
+g = 
+\left(
+\begin{array}{c}
+	11.63957 \\ 10.9351 \\ 9.46949 \\ 7.17105 \\ 4.0172 \\ 0.09466 \\ -4.3653 \\ -8.9861 \\ -13.2781
+\end{array}
+\right)
+$$ 
+
+Для нахождения $c$ воспользуемся системой уравнений:
+$$
+\begin{cases}
+	c_1 = 0 \\
+	h_i c_i + 2(h_i + h_{i+1})c_{i+1} + h_{i+1} c_{i+2} = 3(g_{i+1} - g_i),  i \in \langle 1, \ldots, k - 2 \rangle \\
+	c_k = 0
+\end{cases}
+$$
+
+Решим второе уравнение, как СЛАУ вида $Z \hat c = l$, где:
+$$
+Z = \left(
+\begin{array}{ccccccccccc}
+	0.8 & 0.2 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+	0.2 & 0.8 & 0.2 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+	0.0 & 0.2 & 0.8 & 0.2 & 0.0 & 0.0 & 0.0 & 0.0 \\
+	0.0 & 0.0 & 0.2 & 0.8 & 0.2 & 0.0 & 0.0 & 0.0 \\
+	0.0 & 0.0 & 0.0 & 0.2 & 0.8 & 0.2 & 0.0 & 0.0 \\
+	0.0 & 0.0 & 0.0 & 0.0 & 0.2 & 0.8 & 0.2 & 0.0 \\
+	0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.2 & 0.8 & 0.2 \\
+	0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.2 & 0.8 \\
+\end{array}
+\right), \hspace{0.2 cm}
+l = 
+\left(
+\begin{array}{c}
+	-2.1134 \\ -4.3968 \\ -6.8953 \\ -9.4615 \\ -11.7676 \\ -13.38 \\ -13.8624 \\ -12.8759 
+\end{array}
+\right)
+$$
+$$\hat c = Z^{-1}l = 
+\left(
+\begin{array}{c}
+	-1.7342 \\ -3.6302 \\ -5.729 \\ -7.9303 \\ -9.8574 \\ -11.4781 \\ -11.1304 \\ -13.3123 
+\end{array}
+\right)
+$$
+Добавим $c_1$ и $c_k$:
+$$
+c = 
+\left(
+\begin{array}{c}
+	0.0 \\ -1.7342 \\ -3.6302 \\ -5.729 \\ -7.9303 \\ -9.8574 \\ -11.4781 \\ -11.1304 \\ -13.3123 \\ 0.0
+\end{array}
+\right)
+$$
+
+Определим коэффициенты $b_i$ и $d_i$ по формулам:
+$$
+\begin{cases}
+	b_i = g_i = \dfrac{h_i}{3}(2c_i + c_{i+1}),  i \in \langle 1, \ldots, k - 1 \rangle \\
+	b_k = b_{k-1} + h_{k-1}(c_{k-1} + c_k)
+\end{cases}
+$$
+$$
+d_i = \dfrac{1}{3h_i}(c_{i+1} - c_i), i \in \langle 1, \ldots, k - 1 \rangle 
+$$
+
+$$ 
+b =
+\left(
+\begin{array}{c}
+	11.75519 \\ 11.40835 \\ 10.33546 \\ 8.46361 \\ 5.73173 \\ 2.17418 \\ -2.0929 \\ -6.6146 \\ -11.5031 \\ -12.3906
+\end{array}
+\right) ,
+\hspace{0.2cm}
+d = 
+\left(
+\begin{array}{c}
+	-2.8903 \\ -3.16 \\ -3.498 \\ -3.6688 \\ -3.2119 \\ -2.7011 \\ 0.57953 \\ -3.6366 \\ 22.18715 \\ -107.6718
+\end{array}
+\right)
+$$ 
+
+Теперь мы можем найти  неизвестные коэффициенты полиномов $P_1, P_2, \ldots, P_k$ сплайна $spl_3(A; {}^{\mathsmaller{>}} y)$ по формуле:
+$$
+P_i(t) = a_i + b_i(t- \tau_{i-1}) + c_i(t- \tau_{i-1})^2 + d_i(t- \tau_{i-1})^3
+$$
+Построим графики $f(\tau)$ и $spl_3(A; {}^{\mathsmaller{>}} y)$ :
+\begin{center}
+	\includegraphics[scale=0.9]{1.png}
+\end{center}
+
+Производная функции $f(\tau)$:
+$$f ^ \prime (\tau) = \pi \sqrt{\sqrt{22}\tau^2 + 14}cos(\dfrac{\pi \tau}{2}) + 
+\dfrac {2 \sqrt{22} \tau sin(\dfrac{\pi \tau}{2})} {\sqrt{\sqrt{22}\tau^2 + 14}}
+$$
+
+Коэффициенты $P_1^\prime, P_2^\prime, \ldots, P_k^\prime$ производной сплайна $\dfrac {d spl_3(A; {}^{\mathsmaller{>}} y)} {d \tau}$:
+$$
+P_i^\prime(\tau_i) = b_i + 2 c_i(\tau_i - \tau_{i-1}) + 3d_i(\tau_i - \tau_{i-1})^2
+$$
+
+Построим графики $\dfrac {d f(\tau)} {d \tau}$ и $\dfrac {d spl_3(A; {}^{\mathsmaller{>}} y)} {d \tau}$ :
+\begin{center}
+	\includegraphics[scale=0.9]{2.png}
+\end{center}
+\begin{center}
+	\textbf{\textit{Результаты}}
+\end{center}
+
+В результате лабораторной работы была решена задача интерполяции сеточной функции с помощью сплайна 3-ей степени единичного дефекта, а также было проведено сравнение значений функции и сплайна и их производных. Получили небольшое расхождение графиков производных, что вызвано большим шагом нашей сетки $A$.
+\end{document}
